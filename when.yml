@@ -1,0 +1,10 @@
+---
+- hosts: webserver
+  become: true
+  become_user: root
+  tasks:
+  - name: install httpd
+    yum: name=httpd state=present
+    when: ansible_os_family== “Redhat“ or “centos”
+  - name: start httpd
+    service: name=httpdstate=started

@@ -1,0 +1,9 @@
+---
+- hosts: webserver
+  become: true  
+  tasks:
+  - name: replace example
+    replace:
+     path: /home/nani/playbook/passwd
+     regexp: 'shutdown'
+     replace: "breakdown"

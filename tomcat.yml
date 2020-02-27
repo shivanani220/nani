@@ -1,0 +1,44 @@
+---
+- hosts: web
+  become: true
+  become_user: root
+  tasks:
+ 
+  - name: Create directory
+    file: path=/opt/nani state=directory
+  - name: Download tomcat
+    get_url: url=http://apachemirror.wuchna.com/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz dest=/opt/nani/apache-tomcat-9.0.31.tar.gz 
+  - name: Extract tomcat
+    command: tar xvf /opt/nani/apache-tomcat-9.0.31.tar.gz  -C /opt/nani 
+  - name: Move to a smaller directory
+    command: mv /opt/nani/apache-tomcat-9.0.31 /opt/nani/tomcat
+
+  - name: Change file ownership, group and permissions
+    file:
+      path: /opt/nani/tomcat/bin
+      owner: nani
+      group: nani
+         
+  - name: Symlink install directory
+    file: src=/opt/nani/tomcat/bin/startup.sh dest=/etc/init.d/tomcatstart state=link owner=nani group=nani
+
+  - name: Symlink install directory
+    file: src=/opt/nani/tomcat/bin/shutdown.sh dest=/etc/init.d/tomcatstop state=link owner=nani group=nani
+
+
+  - name: Copy fil
+    copy:
+     src: /home/shiva/ansible/tomcat-users.xml
+     dest: /opt/nani/tomcat/conf/tomcat-users.xml
+
+  - name: Start service tomcat
+    shell: nohup /etc/init.d/tomcatstart &
+
+  - name: Start service tomcat
+    shell: nohup /etc/init.d/tomcatstop &
+
+  - name: Start service tomcat
+    shell: nohup /etc/init.d/tomcatstart &
+  
+    
+

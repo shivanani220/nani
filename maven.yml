@@ -28,4 +28,3 @@
      line: 'export PATH=${M2_HOME}/bin:${PATH}'
   - name: Source profile
     shell: source /etc/profile
-~

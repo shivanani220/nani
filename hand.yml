@@ -1,0 +1,15 @@
+---
+- hosts: webserver
+  become: true
+  become_user: root
+  tasks:
+  - name: install tomcat
+    yum: name=tomcat state=latest
+  - name: start httpd
+    service: name=tomcat state=started
+  - name: deploy the war
+    copy: src=/home/shiva/ansible/sample.war dest=/usr/share/tomcat/webapps
+    notify: restart tomcat
+  handlers:
+  - name: restart tomcat
+    service: name=tomcat state=restarted
